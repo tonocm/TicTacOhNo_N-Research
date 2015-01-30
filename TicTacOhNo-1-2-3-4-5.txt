@@ -1,0 +1,51 @@
+n = 1
+expected longest chain RIT = 1.0
+expected longest chain UR = 0.0
+win percentage = 100.0
+tie percentage = 0.0
+loss percentage = 0.0
+expected win chain length = 1.0
+expected tie chain length = NaN
+expected loss chain length = 0.0
+
+n = 2
+expected longest chain RIT = 2.0
+expected longest chain UR = 2.0
+win percentage = 0.0
+tie percentage = 100.0
+loss percentage = 0.0
+expected win chain length = NaN
+expected tie chain length = 2.0
+expected loss chain length = NaN
+
+n = 3
+expected longest chain RIT = 2.7777777777777777
+expected longest chain UR = 2.373015873015873
+win percentage = 49.2063492063492
+tie percentage = 41.269841269841265
+loss percentage = 9.523809523809524
+expected win chain length = 3.0
+expected tie chain length = 2.6923076923076925
+expected loss chain length = 1.9864864864864864
+
+n = 4
+expected longest chain RIT = 3.3103341103341104
+expected longest chain UR = 3.3103341103341104
+win percentage = 25.027195027195027
+tie percentage = 49.945609945609945
+loss percentage = 25.027195027195027
+expected win chain length = 3.889475318224154
+expected tie chain length = 3.274735532047293
+expected loss chain length = 2.8022353306426577
+
+n = 5
+expected longest chain RIT = 4.069623290963983
+expected longest chain UR = 3.828735265273157
+win percentage = 40.934446089648674
+tie percentage = 36.20343057131319
+loss percentage = 22.86212333903813
+expected win chain length = 4.548341232084634
+expected tie chain length = 3.954954275458427
+expected loss chain length = 3.3434629054081957
+
+
