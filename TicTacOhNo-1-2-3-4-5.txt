@@ -1,4 +1,5 @@
 n = 1
+number of boards = 1
 expected longest chain RIT = 1.0
 expected longest chain UR = 0.0
 win percentage = 100.0
@@ -9,6 +10,7 @@ expected tie chain length = NaN
 expected loss chain length = 0.0
 
 n = 2
+number of boards = 6
 expected longest chain RIT = 2.0
 expected longest chain UR = 2.0
 win percentage = 0.0
@@ -19,6 +21,7 @@ expected tie chain length = 2.0
 expected loss chain length = NaN
 
 n = 3
+number of boards = 126
 expected longest chain RIT = 2.7777777777777777
 expected longest chain UR = 2.373015873015873
 win percentage = 49.2063492063492
@@ -29,6 +32,7 @@ expected tie chain length = 2.6923076923076925
 expected loss chain length = 1.9864864864864864
 
 n = 4
+number of boards = 12870
 expected longest chain RIT = 3.3103341103341104
 expected longest chain UR = 3.3103341103341104
 win percentage = 25.027195027195027
@@ -39,6 +43,7 @@ expected tie chain length = 3.274735532047293
 expected loss chain length = 2.8022353306426577
 
 n = 5
+number of boards = 5200300
 expected longest chain RIT = 4.069623290963983
 expected longest chain UR = 3.828735265273157
 win percentage = 40.934446089648674
@@ -48,4 +53,57 @@ expected win chain length = 4.548341232084634
 expected tie chain length = 3.954954275458427
 expected loss chain length = 3.3434629054081957
 
+n = 7
+number of boards = 100000
+expected longest chain RIT = 5.14412
+expected longest chain UR = 4.96208
+win percentage = 40.638000000000005
+tie percentage = 29.351
+loss percentage = 30.011
+expected win chain length = 5.817025010969724
+expected tie chain length = 4.942114408367687
+expected loss chain length = 4.381392517940806
 
+n = 9
+number of boards = 100000
+expected longest chain RIT = 6.02038
+expected longest chain UR = 5.87767
+win percentage = 40.759
+tie percentage = 25.723000000000003
+loss percentage = 33.518
+expected win chain length = 6.82887030978634
+expected tie chain length = 5.753294716790421
+expected loss chain length = 5.204747095332337
+
+n = 11
+number of boards = 1000000
+expected longest chain RIT = 6.742405
+expected longest chain UR = 6.629476
+win percentage = 40.696799999999996
+tie percentage = 23.7574
+loss percentage = 35.5458
+expected win chain length = 7.64480749607175
+expected tie chain length = 6.44676606025912
+expected loss chain length = 5.876128306222506
+
+n = 21
+number of boards = 100000
+expected longest chain RIT = 9.08874
+expected longest chain UR = 9.04933
+win percentage = 40.869
+tie percentage = 19.878
+loss percentage = 39.253
+expected win chain length = 10.199895159881182
+expected tie chain length = 8.713049602575712
+expected loss chain length = 8.114812411073114
+
+n = 31
+number of boards = 100000
+expected longest chain RIT = 10.47391
+expected longest chain UR = 10.4462
+win percentage = 41.0
+tie percentage = 19.026
+loss percentage = 39.974
+expected win chain length = 11.648825548941636
+expected tie chain length = 10.077683170398402
+expected loss chain length = 9.450971916911602
