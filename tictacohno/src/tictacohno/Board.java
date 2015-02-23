@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Board {
+	public static int RIT = 0;
+	public static int UR = 1;
+	
 	private int n;
 	private int[][] board;
 	
@@ -29,7 +32,7 @@ public class Board {
 	}
 	
 	public Board clone() {
-		Board b = new Board(n, 0);
+		Board b = new Board(n, UR);
 		for(int i=0; i<n; i++) {
 			for(int j=0; j<n; j++) {
 				b.setCell(i, j, getCell(i, j));
@@ -155,7 +158,7 @@ public class Board {
 	/* STATIC METHODS */
 	
 	static public Board randomGame(int n) {
-		Board b = new Board(n, 0);
+		Board b = new Board(n, UR);
 		int count = (int)Math.ceil((float)n*n/2);
 		for(int i=0; i<count; i++) {
 			int x;
@@ -163,8 +166,8 @@ public class Board {
 			do {
 				x = (int)(n*Math.random());
 				y = (int)(n*Math.random());
-			} while(b.getCell(x, y) == 1);
-			b.setCell(x, y, 1);
+			} while(b.getCell(x, y) == RIT);
+			b.setCell(x, y, RIT);
 		}
 		return b;
 	}
@@ -179,7 +182,7 @@ public class Board {
 	
 	static public List<Board> generateBoards(int n) {
 		List<Board> boardList = new ArrayList<Board>();
-		Board b = new Board(n, 0);
+		Board b = new Board(n, UR);
 		generateBoardsRecursive(boardList, b, 0, 0, (int)Math.ceil((float)n*n/2));
 		return boardList;
 	}
@@ -202,10 +205,10 @@ public class Board {
 			yNew++;
 		}
 		
-		b.setCell(x, y, 1);
+		b.setCell(x, y, RIT);
 		generateBoardsRecursive(boardList, b, xNew, yNew, count-1);
 		
-		b.setCell(x, y, 0);
+		b.setCell(x, y, UR);
 		generateBoardsRecursive(boardList, b, xNew, yNew, count);
 	}
 }
