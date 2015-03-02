@@ -1,0 +1,297 @@
+\documentclass[12pt]{article}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{array}
+\usepackage[backend=biber]{biblatex}
+\usepackage{bm}
+\usepackage{caption}
+\usepackage{float}
+\usepackage[top=1in, bottom=1in, left=1in, right=1in]{geometry}
+\usepackage{graphicx}
+\usepackage[utf8]{inputenc}
+\usepackage{mathtools}
+\usepackage{setspace}
+\usepackage{subcaption}
+\usepackage{url}
+
+\addbibresource{refs.bib}
+
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}
+
+\theoremstyle{theorem}
+\newtheorem{theorem}{Theorem}
+
+\renewcommand{\qedsymbol}{$\blacksquare$}
+
+\title{TicTacOhNo$_N$}
+\author{
+  Antonio Cardenas \thanks{E-mail: \texttt{hcardena@u.rochester.edu}}
+  \and
+  Nathaniel S. Potrepka \thanks{E-mail: \texttt{npotrepk@u.rochester.edu}}
+  \and
+  Jonathan Liao \thanks{E-mail: \texttt{jliao5@u.rochester.edu}}
+}
+\date{March 2, 2015}
+
+%base format on this paper... it is from Google, ``short'', and well written.
+%http://static.googleusercontent.com/media/research.google.com/en/us/pubs/archive/43249.pdf
+
+\begin{document}
+\sloppy
+
+{
+  \singlespacing
+  \maketitle
+      {
+        \centering
+        \begin{tabular}{@{}>{\itshape}ll@{}}
+          Course: & CSC 200: Undergraduate Problem Seminar \\
+          Professor: & Lane A. Hemaspaandra \\
+          & Department of Computer Science \\
+          & University of Rochester
+        \end{tabular}
+        \vspace*{0.25in}
+        \par
+      }
+}
+
+\begin{center}
+  \bf{Abstract}
+\end{center}
+
+\begin{quotation}
+  {
+    \singlespacing
+    \vspace*{-0.25in}
+    The purpose of this paper is to argue and analyze an open problem in the computer science community, where two parties place marks in an $N \times N$ board; marking each cell in the board iteratively.
+
+    The approach of this paper is to make statistical analysis as the backbone to explore mathematical models. First, the paper discusses our proposed techniques, namely, statitsical and theoretical analysis.
+
+    The paper finalizes by finding an exact way of predicting the nuber of possible ties for an $N \times N$ board. Statistical data previously gather was then scrutinized against the mathematical findings; in where the theoretical predictions exactly matched the exhaustive statistical analysis.
+
+    This means that given the resolved equation, the runtime complexity for finding the number of tying states in an $N \times N$ board was reduced from $O(X^{N^2})$ to $O(N)$.
+  }
+\end{quotation}
+
+
+\section{Introduction}
+
+TicTacOhNo$_N$ is an unsolved analytical problem that looks into probabilities relating to a game between two ``players'', namely Rochester Institute of Technology (RIT) and the University of Rochester (UR), in which the players take turns marking cells on an $N \times N$ board. Let us define a board as an $N \times N$ grid of cells, where each cell $c_{ij} = \{O, RIT, UR\}$ for unmarked, marked by RIT, and marked by UR, respectively. The initial board state is with all cells unmarked. The players each alternate turns (RIT always going first) marking any one of the unmarked cells with equal probability. Once a cell is marked, it cannot be marked again. For example, RIT goes first by marking one of the $N^2$ unmarked cells, each unmarked cell having equal probability of being marked. Then UR goes second by marking one of the $N^2-1$ unmarked cells with equal probability. Play alternates until all cells are marked. When play ends, RIT will have marked $\ceil[\big]{\frac{N^2}{2}}$ cells, and UR will have marked $\floor[\big]{\frac{N^2}{2}}$ cells.
+
+Let us define a chain as a set of similarly marked cells that are either all horizontally aligned, all vertically aligned, or all diagonally aligned.
+
+% Maybe put examples here?
+
+The length of a chain is defined by the number of cells in the set of cells that defines the chain. We call a chain of length $k$ a ``$k$-chain''. We define the winner of the game as the player with the longest length chain; thus, for each player, we only need to worry about , and we call the length of this chain the ``maximum chain length'' for a player. We consider the game a tie when both players have the same maximum chain length.
+
+The questions we will focus on are:
+\begin{enumerate}
+\item What is the probability of a tie?
+\item What is the probability that RIT wins? That UR wins?
+\item What is the expected maximum chain length over the tie games? Over the RIT-win games? Over the UR-win games?
+\end{enumerate}
+
+\section{Preliminaries}
+
+As stated in the introduction, in any particular turn, each unmarked cell has an equal probability of being marked. Using this information, we can conclude that any particular end state has equal probability of occurring.
+
+\begin{theorem}
+  Suppose that, for each turn, each unmarked cell has an equal probability of being marked. Then each board end state has equal probability of occurring with the number of distinct end states being $\dbinom{N^2}{\ceil[\big]{\frac{N^2}{2}}}$.
+\end{theorem}
+
+\begin{proof}
+  If, for each turn, each unmarked cell has an equal probability of being chosen, then the probability of any particular sequence of markings is
+  $$\frac{1}{N^2} \cdot \frac{1}{N^2-1} \cdot \frac{1}{N^2-2} \cdots \frac{1}{3} \cdot \frac{1}{2} \cdot \frac{1}{1} = \frac{1}{N^2!} \text{.}$$
+  Each sequence of markings will result in an end state with $\ceil[\big]{\frac{N^2}{2}}$ RIT markings and $\floor[\big]{\frac{N^2}{2}}$ UR markings. Thus, for each end state, there are $\ceil[\big]{\frac{N^2}{2}}!$ possible orders that RIT could mark its cells and $\floor[\big]{\frac{N^2}{2}}!$ possible orders that UR could mark its cells, so there are $\ceil[\big]{\frac{N^2}{2}}! \cdot \floor[\big]{\frac{N^2}{2}}!$ possible sequences of markings for any particular end state. The probability of a particular end state is thus the product of the number of sequences that result in that end state and the probability of a sequence, which is
+  $$\bigg( \ceil[\bigg]{\frac{N^2}{2}}! \cdot \floor[\bigg]{\frac{N^2}{2}}! \bigg) \bigg( \frac{1}{N^2!} \bigg) = \frac{\ceil[\big]{\frac{N^2}{2}}! \floor[\big]{\frac{N^2}{2}}!}{N^2!} = \dbinom{N^2}{\ceil[\big]{\frac{N^2}{2}}} ^{-1} \text{.}$$
+  This shows that each end state has the same probability of occurring. In addition, since the sum of probabilities of each distinct end state must be $1$, there are $\dbinom{N^2}{\ceil[\big]{\frac{N^2}{2}}}$ end states.
+\end{proof}
+
+Since all board end states are equally likely, we can find the probability that $P$ is true by dividing the number of board end states where $P$ is true by the total number of board end states.
+
+The focus questions deal only with probabilities relating to the maximum chain length for each player. Therefore, let us define $P(k_0, k_1)$ as a two-dimensional probability mass function, where $k_0$ is the maximum chain length for RIT, and $k_1$ is the maximum chain length for UR, and $P(k_0, k_1)$ is the probability that RIT and UR have maximum chain lengths of $k_0$ and $k_1$, respectively.
+
+\begin{figure}[H]
+  $$
+  \begin{matrix}
+    P(k_0 = 1, k_1 = 1) & P(k_0 = 2, k_1 = 1) & \ldots & P(k_0 = N, k_1 = 1)\\
+    P(k_0 = 1, k_1 = 2) & P(k_0 = 2, k_1 = 2) & \ldots & P(k_0 = N, k_1 = 2)\\
+    \vdots & \vdots & \ddots & \vdots\\
+    P(k_0 = 1, k_1 = N) & P(k_0 = 2, k_1 = N) & \ldots & P(k_0 = N, k_1 = N)
+  \end{matrix}
+  $$
+  \caption{A two-dimensional probability mass function}
+\end{figure}
+
+Visualizing this problem as a two-dimensional probability mass function will help to formalize the calculations of probabilities for specific $k_0, k_1$. For example, consider the diagonal (from top-left to bottom-right), where $k_0 = k_1$. The probability of a tie is the sum of the probabilities along the diagonal. Additionally, the probability that RIT wins is the sum of the probabilities above the diagonal, where $k_0 > k_1$. Likewise, the probability that UR wins is the sum of the probabilities below the diagonal, where $k_0 < k_1$.
+
+\section{Statistical Analysis}
+
+The analysis of the problem consists of the repeated generation of arbitrary board states and gathering statistics for each one individually, with the expectation that after a high amount of repetitions, the collected results will approximate the actual exhaustive analysis (considering every single possible board state).
+
+Each board is generated in a two-dimensional array where $0$ represents a slot occupied by RIT and $1$ represents one occupied by UR. To begin with, an exhaustive generation of boards is useful; however, this becomes infeasible after $N = 5$ due to the incredibly fast growth rate of the problem.
+
+However, by using exhaustive generation, it is possible to find exact probabilities for each of the focus questions. Nonetheless, when the analysis of the problem exceeds $N = 5$, given the computational complexity, a different approach must be taken.
+
+Instead of exhaustively searching through all possible board states, randomly-selected positions are marked as either UR or RIT in the board's unmarked cells by following an iterative selection process between the two parties. By repeating this process at least $10\,000$ times, it is expected that the results obtained will be accurate samples to the extent that their lack of accuracy will not conflict with those mathematical findings.
+
+Given that the experimental results are merely an approximation of the exact results, even more comparisons were performed in order to guarantee the accuracy and reliability of the collected data.
+
+For example,
+
+\begin{figure}[H]
+  \centering
+  \begin{subfigure}{.5\textwidth}
+    \centering
+    \includegraphics[width=.9\linewidth]{prob_win_rit.png}
+    \caption{Probability of RIT Winning}
+  \end{subfigure}%
+  \begin{subfigure}{.5\textwidth}
+    \centering
+    \includegraphics[width=.9\linewidth]{prob_win_ur.png}
+    \caption{Probability of UR Winning}
+  \end{subfigure}
+  \caption{Comparison between the win probabilities of RIT and UR}
+\end{figure}
+
+For lower values of $N$ in Figure 2(a) and Figure 2(b), it is possible to observe a high variance when comparing RIT and UR wins, whereas as $N$ gets larger, the difference between RIT winning or UR winning is virtually unnoticeable.
+
+Part of this effect is due to the fact that whenever a board is odd, RIT will have an extra ($+1$) mark advantage, which factors into the end-result equation with a very high weight when $N$ is small, hence a unit increase is very significant; but its effect banishes as $N$ increases.
+
+To best explain this behavior, both Figure 2(a) and Figure 2(b) will be merged and analyzed below:
+
+
+The empty diamonds now represent RIT and the full diamonds represent UR. Empirical evidence show how after $N = 25$ the distinction between a UR win and an RIT win cannot be made anymore. That is to say that, whenever the extra-mark factor has a weight of $\delta < 1/25$ in odd boards, then regardless of this single advantage in the game, its outcome will be the same. Where $\delta$ is the advantage probability gained by having a final extra turn to place a mark in a board's cell.
+
+%probably explain how it ``converges'' to a certain number...
+
+Furthermore, not only the probability of the winning party can be calculated, but also its expected winning chain length. Figure 4(a) and Figure 4(b) best represent the concept:
+
+\begin{figure}[H]
+  \centering
+  \begin{subfigure}{.5\textwidth}
+    \centering
+    \includegraphics[width=.9\linewidth]{win_chain_rit.png}
+    \caption{RIT's Winning Chain Length Size}
+  \end{subfigure}%
+  \begin{subfigure}{.5\textwidth}
+    \centering
+    \includegraphics[width=.9\linewidth]{win_chain_ur.png}
+    \caption{UR's Winning Chain Length Size}
+  \end{subfigure}
+  \caption{Analysis of chain-length sizes based on board marks}
+\end{figure}
+
+%after careful analysis, concluded that they're the same ( UR and RIT)
+
+Nonetheless, the similarity of these sets make it difficult for any conclusive evidence to be gathered. Instead, further analysis will be conducted by comparing and contrasting either team's expected winning chain length and the expected tie chain length.
+Figure $4$ shows the following:
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=.8\linewidth]{expected_max_chain_length.png}
+  \caption{Expected Mac Chains for Tie and Win Cases}
+\end{figure}
+
+The difference between an expected winning chain length and an expected tie chain length is a fraction of an integer. This suggests that the cases for which RIT and UR have tying chain lengths is a slight variation of the general case; where there exists an expected chain length as a function of $N$, and both parties are able to reach it. When this statement is true, the game results in a tie, hence, having a slightly reduced expected chain length given that the board is in a state of ``equilibrium''. However, when there exists a winner, a slight weight in either player's side increases the expected winning chain length and reduces determines a winner of the game.
+
+\section{Theoretical Analysis of N-chain Tie}
+
+To find exact formulas for $P(k_0, k_1)$ for specific values of $k_0$ and $k_1$ is an arduous endeavor. For this reason, we chose to first analyze the case of a tie with chain length $N$, or $P(N, N)$. This special case, although a simplification of the full problem, gives valuable insight into how the full problem can be represented in a closed form.
+
+One simplification that becomes obvious after some analysis is that in the $N$-chain tie case, the $N$-chains of the both players occur together as all rows, all columns, or all diagonals. In other words, if RIT marks an entire row, creating an $N$-chain, then UR cannot mark an entire column or diagonal, and therefore, for UR to tie RIT, UR must mark an entire row. A similar claim can be made for when RIT marks an entire column or entire diagonal. This lack of overlap between rows, columns, and diagonals simplifies the problem tremendously.
+
+When considering the case of the rows (and equivalently through symmetry, columns), we must make sure not to count any end state twice. The way we count the number of end states is by
+\begin{enumerate}
+\item Choosing $r$ rows for RIT
+\item Choosing $s$ rows for UR
+\item Choosing a remaining cell for each of RIT's remaining markings
+\end{enumerate}
+The problem of overlapping cases arises from the fact that we count rows twice when we don't consider that the remaining RIT markings can fill up an entire row. For example, if
+\begin{enumerate}
+\item RIT chooses 1 row
+\item UR chooses $s$ rows
+\item RIT chooses remaining spaces, including another full row
+\end{enumerate}
+the resulting end state is also counted when
+\begin{enumerate}
+\item RIT chooses those 2 rows
+\item UR chooses $s$ rows
+\item RIT chooses remaining spaces, not including a full row
+\end{enumerate}
+We can get rid of this problem by using the The Inclusion-Exclusion Principle \cite{iep}. Specifically, if $R(r,s)$ is the number of board states where RIT and UR have at least $r$ and $s$ $N$-chain rows, respectively, we can use
+$$
+\begin{matrix}
+  R(1, 1) & - R(2, 1) & \ldots & \pm R(\floor{N/2}, 1)\\
+  - R(1, 2) & + R(2, 2) & \ldots & \mp R(\floor{N/2}, 2)\\
+  \hdots & \hdots & \hdots & \hdots \\
+  \pm R(1, \floor{N/2}) & \mp R(2, \floor{N/2}) & \ldots & + R(\floor{N/2},\floor{N/2})
+\end{matrix}
+$$
+to count all board states with where RIT and UR have $N$-chain rows. This is because
+
+\begin{theorem}
+  A closed form solution for $P(N, N)$ exists and is
+  $$P(N, N) = \frac{ \displaystyle
+    2 \sum_{r=1}^{\floor[\big]{\tfrac{N}{2}}} \sum_{s=1}^{\floor[\big]{\tfrac{N}{2}}} {\Bigg[ (-1)^{r+s} \binom{N}{r} \binom{N-r}{s} \binom{N^2 - (r+s)N}{\ceil[\big]{\frac{N^2}{2}} - rN}} \Bigg] + 2 \binom{N^2 - 2N}{\ceil[\big]{\frac{N^2}{2}} - N}
+  }{ \displaystyle
+    \binom{N^2}{\ceil[\big]{\frac{N^2}{2}}}
+  }$$
+  for $N$ even and
+  $$P(N, N) = \frac{ \displaystyle
+    2 \sum_{r=1}^{\floor[\big]{\tfrac{N}{2}}} \sum_{s=1}^{\floor[\big]{\tfrac{N}{2}}} {\Bigg[(-1)^{r+s} \binom{N}{r} \binom{N-r}{s} \binom{N^2 - (r+s)N}{\ceil[\big]{\frac{N^2}{2}} - rN}} \Bigg]
+  }{ \displaystyle
+    \binom{N^2}{\ceil[\big]{\frac{N^2}{2}}}
+  }$$
+  for $N$ odd.
+\end{theorem}
+
+\begin{proof}
+  Let us first consider the case where RIT and UR have $N$-chain rows. If each player marks exactly $\frac{N^2}{2} + C$ cells, where $C$ is either $-\frac{1}{2}$, $0$, or $\frac{1}{2}$. It follows that the maximum number of full rows a player can mark is $$\floor[\bigg]{\frac{\frac{N^2}{2} + C}{N}} = \floor[\bigg]{\frac{N}{2} + \frac{C}{N}} = \floor[\bigg]{\frac{N}{2}} \text{.}$$
+  Using the outline for the row formula above, sum over $\floor[\bigg]{\frac{N}{2}}$ rows for RIT and $\floor[\bigg]{\frac{N}{2}}$ rows for UR, and for each term, we multiply by the inclusion exclusion factor, $(-1)r+s$, then we choose $r$ rows for RIT, and from the $N-r$ rows, we choose $s$ rows for UR.  Finally from the remaining $N^2-(r+s)N$ spaces we choose $\ceil[\big]{\frac{N^2}{2}} - rN$ cells for RIT. This concludes the row formula.
+  From symmetry, we can multiply the row formula by $2$ because the column case is the same as the row case.
+  The diagonal case is trivial. For even $N$ only, there are $2$ possible diagonals RIT can choose. From the remaining $N^{2} - 2N$ cells, we choose $\frac{N^2}{2} - rN$ for RIT. For odd $N$, RIT and UR cannot tie with $N$-chain diagonals.
+\end{proof}
+
+We implemented the formula in Java, and calculated the data for $1 \leq N \leq 32$ before the numbers became too large or small for our graphing program to handle.  The graphs are shown below.
+
+\begin{figure}[H]
+  \centering
+  \begin{subfigure}{.5\textwidth}
+    \centering
+    \includegraphics[width=.9\linewidth]{nchain_boards.png}
+    \caption{$N$-chain tie number of boards}
+  \end{subfigure}%
+  \begin{subfigure}{.5\textwidth}
+    \centering
+    \includegraphics[width=.9\linewidth]{nchain_prob.png}
+    \caption{$N$-chain tie probability}
+  \end{subfigure}
+  \caption{Calculation of exact $N$-chain tie number of boards and probability}
+\end{figure}
+
+Going forward, this formula is useful for a quick way to calculate the $N$-chain tie case.
+
+\section{Related Works}
+
+Given the complexity of this problem, related works on statistical analysis and probability are cited through the research.
+
+The Inclusion-Exclusion Principle \cite{iep} was used to account for overlaps when inspecting possible overlapping probabilities, due to the repeated counting of equivalent scenarios.
+
+Testing
+
+\section{Conclusions and Future Work}
+
+The findings indicate an exact way of predicting the nuber of possible ties for an $N \times N$ board. Statistical data previously gather was then scrutinized against the mathematical findings; in where the theoretical predictions exactly matched the exhaustive statistical analysis.
+
+This means that given the resolved equation, the runtime complexity for finding the number of tying states in an $N \times N$ board was reduced from $O(X^{N^2})$ to $O(N)$.
+
+\printbibliography
+
+\end{document}

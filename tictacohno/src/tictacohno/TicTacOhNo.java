@@ -14,9 +14,9 @@ public class TicTacOhNo {
      * maxN - Maximum size of NxN boards, starting at N=5 or N=1 depending on doExhaustive
      */
     
-    final int boardReps = 1000000;
+    final int boardReps = 1000;
     final boolean doExhaustive = false;
-    int maxN = 10;
+    int maxN = 2000;
     final boolean print = false;
     
     BufferedWriter out;
@@ -26,26 +26,26 @@ public class TicTacOhNo {
     else
       out = new BufferedWriter(new FileWriter(new File("NoPrintData.txt"), false));
     
-    int count, n=1;
+    int count, minN=maxN;
     
     if(doExhaustive){
-      n = 1; //Smallest board size
+      minN = 1; //Smallest board size
       maxN = 5; //Memory constrain
     }
     
-    for(int i=n; n<=maxN; n++){
+    for(int n=minN; n<=maxN; n++){
       List<Board> boardList;
       if(print)
         System.out.println(n); //For log purposes "progress bar"
       
-      if(doExhaustive){
-        boardList = Board.generateBoards(n);
-        count = boardList.size();
-      }
+      
       else{
         count = boardReps;
-        boardList = Board.generateRandomBoards(n, count);
+        
+        boardList = Board.generateRandomBoards(n, 1);
       }
+      
+      
       
       int sumLongestChainZero = 0;
       int sumLongestChainOne = 0;
@@ -60,7 +60,21 @@ public class TicTacOhNo {
       int nChain1 = 0;
       int nChainTie = 0;
       
-      for(Board b : boardList) {
+      if(doExhaustive){
+        boardList = Board.generateBoards(n);
+        count = boardList.size();
+      } else {
+        boardList = null;
+        count = boardReps;
+      }
+      
+      for(int i=0; i<count; i++) {
+        Board b;
+        if(doExhaustive) {
+          b = boardList.get(i);
+        } else {
+          b = Board.generateRandomBoards(n, 1).get(0);
+        }
         temp0 = b.getLongestChain(0);
         temp1 = b.getLongestChain(1);
         sumLongestChainZero += temp0;
@@ -89,7 +103,6 @@ public class TicTacOhNo {
         
         if(temp0 == n && temp1 == n)
           nChainTie++;
-        
       }
 
       /* Temp variables only used for file writing purposes, hence the names */
@@ -104,6 +117,15 @@ public class TicTacOhNo {
       
       if(!print)
         out.write(n + "\t" + (double)nChainTie/count + "\n");
+      
+      System.out.print(n + "\t");
+      System.out.print(a + "\t");
+      System.out.print(b + "\t");
+      System.out.print(c + "\t");
+      System.out.print(d + "\t");
+      System.out.print(e + "\t");
+      System.out.print(f + "\t");
+      System.out.print(g + "\n");
       
       /* Writing results to a file, every element is separated by a tab, and every set of results is separated by a new line */
       if(print){
