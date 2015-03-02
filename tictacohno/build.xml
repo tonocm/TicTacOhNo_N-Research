@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="frame-based-system" default="run" basedir=".">
+	<target name="compile">
+		<javac srcdir="src" destdir="bin" includeantruntime="false" />
+	</target>
+
+	<target name="run" depends="compile">
+		<java classname="tictacohno.TicTacOhNo">
+  			<classpath>
+                <pathelement location="bin"/>
+            </classpath>
+        </java>
+	</target>
+</project>
