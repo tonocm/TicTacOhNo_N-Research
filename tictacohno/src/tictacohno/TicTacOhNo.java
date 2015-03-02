@@ -6,13 +6,16 @@ public class TicTacOhNo {
 
 	public static void main(String[] args) {
 	
-		int maxN = 5;
+		int maxN = 50;
 		
 		for(int n=1; n<=maxN; n++) {
 		
-			List<Board> boardList = Board.generateBoards(n);
-			int count = boardList.size();
+			//List<Board> boardList = Board.generateBoards(n);
+			//int count = boardList.size();
 			
+			int count = 100000;
+			
+			/*
 			int sumLongestChainZero = 0;
 			int sumLongestChainOne = 0;
 			int sumChainWin = 0;
@@ -26,38 +29,23 @@ public class TicTacOhNo {
 			int nChain0 = 0;
 			int nChain1 = 0;
 			int nChainBoth = 0;
+			*/
 			
-			for(Board b : boardList) {
-				temp0 = b.getLongestChain(0);
-				temp1 = b.getLongestChain(1);
-				sumLongestChainZero += temp0;
-				sumLongestChainOne += temp1;
-				if(temp1 > temp0) {
-					wins++;
-					sumChainWin += temp1;
-					sumChainLoss += temp0;
-				} else if(temp1 == temp0) {
-					ties++;
-					sumChainTie += temp1;
-				} else {
-					losses++;
-					sumChainLoss += temp1;
-					sumChainWin += temp0;
-				}
+			
+			
+			for(int i=0; i<count; i++) {
+				Board b = Board.generateRandomBoards(n, 1).get(0);
 				
-				if(temp0 == n)
-					nChain0++;
-				if(temp1 == n)
-					nChain1++;
-				if(temp0 == n && temp1 == n)
-					nChainBoth++;
-				//b.printBoard();
 			}
+			
+			/*
 			System.out.println("n = "+n);
 			System.out.println("Number of boards = "+count);
 			System.out.println("RIT n-chains = "+nChain0);
 			System.out.println("UR n-chains = "+nChain1);
 			System.out.println("Both n-chains = "+nChainBoth);
+			*/
+			
 			/*System.out.println("expected longest chain RIT = "+((double)sumLongestChainOne/count));
 			System.out.println("expected longest chain UR = "+((double)sumLongestChainZero/count));
 			System.out.println("win percentage = "+((double)wins/count)*100);
