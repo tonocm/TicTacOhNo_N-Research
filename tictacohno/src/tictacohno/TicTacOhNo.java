@@ -1,17 +1,19 @@
 package tictacohno;
 
 import java.util.List;
-
+import java.io.*;
 public class TicTacOhNo {
 
- public static void main(String[] args) {
+ public static void main(String[] args)throws IOException{
  
-  int maxN = 5;
+  int maxN = 50;
+  int count = 10000; 
+  BufferedWriter out = new BufferedWriter(new FileWriter(new File("TicTacOhNoData.txt"), false));
+  for(int n=5; n<=maxN; n++) {
   
-  for(int n=1; n<=maxN; n++) {
-  
-   List<Board> boardList = Board.generateBoards(n);
-   int count = boardList.size();
+   //List<Board> boardList = Board.generateBoards(n);
+    List<Board> boardList = Board.generateRandomBoards(n, count);
+    //int count = boardList.size();
    
    int sumLongestChainZero = 0;
    int sumLongestChainOne = 0;
@@ -53,21 +55,39 @@ public class TicTacOhNo {
      nChainBoth++;
     //b.printBoard();
    }
-   System.out.println("n = "+n);
-   System.out.println("Number of boards = "+count);
-   System.out.println("RIT n-chains = "+nChain0);
-   System.out.println("UR n-chains = "+nChain1);
-   System.out.println("Both n-chains = "+nChainBoth);
-   /*System.out.println("expected longest chain RIT = "+((double)sumLongestChainOne/count));
-   System.out.println("expected longest chain UR = "+((double)sumLongestChainZero/count));
-   System.out.println("win percentage = "+((double)wins/count)*100);
-   System.out.println("tie percentage = "+((double)ties/count)*100);
-   System.out.println("loss percentage = "+((double)losses/count)*100);
-   System.out.println("expected win chain length = "+((double)sumChainWin/(count-ties)));
-   System.out.println("expected tie chain length = "+((double)sumChainTie/ties));
-   System.out.println("expected loss chain length = "+((double)sumChainLoss/(count-ties)));
-   System.out.println();*/
+   /*System.out.print(n + "\t");
+   System.out.print(count + "\t");
+   System.out.print(nChain0 + "\t");
+   System.out.print(nChain1 + "\t");
+   System.out.print(nChainBoth + "\n");*/
+   
+   
+   //System.out.println("expected longest chain RIT = "+((double)sumLongestChainOne/count));
+   //System.out.println("expected longest chain UR = "+((double)sumLongestChainZero/count));
+   //System.out.println("loss percentage = "+((double)losses/count));
+   //System.out.println("expected loss chain length = "+((double)sumChainLoss/(count-ties)));
+   
+   
+   double a = ((double)ties/count); //RIT-UR Tie Prob
+   double b = ((double)wins/count); //RIT Win Prob
+   double c = ((double)losses/count); //UR Win Prob
+   double d = ((double)sumChainTie/ties); //Expected Tie Chain Length
+   double e = ((double)sumChainWin/(count-ties)); //Expected RIT Win Chain Length
+   double f = ((double)sumChainLoss/(count-ties)); //Expected UR Win Chain Length
+   double g = a*d+b*e+c*f; //Average chain length
+   
+   
+   out.write(n + "\t");
+   out.write(a + "\t");
+   out.write(b + "\t");
+   out.write(c + "\t");
+   out.write(d + "\t");
+   out.write(e + "\t");
+   out.write(f + "\t");
+   out.write(g + "\n");
+   
   }
+  out.close();
  }
 
 }
